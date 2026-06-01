@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Ivan P. Garcia — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --cream: #f5f0e8;
+    --white: #ffffff;
+    --gray: #8892a4;
+    --light-gray: #ccd6f6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--cream);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.4rem 4rem;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--light-gray);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-text { max-width: 520px; }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s ease forwards;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.0;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s ease forwards;
+  }
+
+  .hero-name span { color: var(--gold); }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--gray);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s ease forwards;
+  }
+
+  .hero-desc {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--light-gray);
+    margin-bottom: 2.5rem;
+    max-width: 420px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s ease forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 1s ease forwards;
+  }
+
+  .btn-primary {
+    padding: 0.85rem 2rem;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+  .btn-outline {
+    padding: 0.85rem 2rem;
+    background: transparent;
+    color: var(--gold);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: 1px solid var(--gold);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  .btn-outline:hover {
+    background: rgba(201,168,76,0.1);
+    transform: translateY(-2px);
+  }
+
+  /* ── HERO PHOTO ── */
+  .hero-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: fadeIn 1s 0.5s ease forwards;
+  }
+
+  .photo-frame {
+    position: relative;
+    width: 320px;
+    height: 400px;
+  }
+
+  .photo-frame::before {
+    content: '';
+    position: absolute;
+    top: 20px; left: 20px;
+    right: -20px; bottom: -20px;
+    border: 2px solid var(--gold);
+    opacity: 0.4;
+    z-index: 0;
+    transition: all 0.4s;
+  }
+
+  .photo-frame:hover::before { top: 14px; left: 14px; }
+
+  .photo-frame img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    filter: grayscale(20%) contrast(1.05);
+  }
+
+  .photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,22,40,0.3), transparent);
+    z-index: 2;
+  }
+
+  /* ── CONTACT STRIP ── */
+  .contact-strip {
+    background: var(--navy-mid);
+    border-top: 1px solid rgba(201,168,76,0.2);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    padding: 1.2rem 4rem;
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--light-gray);
+  }
+
+  .contact-item svg { color: var(--gold); flex-shrink: 0; }
+
+  /* ── SECTIONS ── */
+  section { padding: 6rem 4rem; }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 3rem;
+  }
+
+  /* ── EXPERIENCE ── */
+  .experience { background: var(--navy-mid); }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.3s;
+  }
+
+  .exp-item:last-child { border-bottom: none; }
+  .exp-item:hover { transform: translateX(6px); }
+
+  .exp-date {
+    font-size: 0.8rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    padding-top: 0.3rem;
+  }
+
+  .exp-role {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+
+  .exp-company {
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .exp-bullets li {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--light-gray);
+    padding-left: 1.2rem;
+    position: relative;
+  }
+
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-size: 0.75rem;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.12);
+    padding: 1.8rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--gold);
+    transition: height 0.3s;
+  }
+
+  .skill-card:hover { border-color: rgba(201,168,76,0.35); transform: translateY(-4px); }
+  .skill-card:hover::before { height: 100%; }
+
+  .skill-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .skill-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+
+  .skill-desc {
+    font-size: 0.78rem;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* ── EDUCATION ── */
+  .edu-list { display: flex; flex-direction: column; gap: 2rem; }
+
+  .edu-item {
+    display: grid;
+    grid-template-columns: 6px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .edu-line {
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    height: 100%;
+    min-height: 80px;
+    margin-left: 2px;
+  }
+
+  .edu-degree {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.2rem;
+  }
+
+  .edu-school {
+    font-size: 0.85rem;
+    color: var(--gold);
+    margin-bottom: 0.2rem;
+  }
+
+  .edu-year {
+    font-size: 0.78rem;
+    color: var(--gray);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── CERTIFICATIONS ── */
+  .certs { background: var(--navy-mid); }
+
+  .cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .cert-card {
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 2rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: all 0.3s;
+  }
+
+  .cert-card:hover {
+    background: rgba(201,168,76,0.05);
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-3px);
+  }
+
+  .cert-badge {
+    width: 42px;
+    height: 42px;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+  }
+
+  .cert-name {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--light-gray);
+    line-height: 1.5;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 3rem 4rem;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+  }
+
+  .footer-copy {
+    font-size: 0.75rem;
+    color: var(--gray);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* Intersection observer fade-in */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 2rem; }
+    .nav-links { gap: 1.5rem; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 7rem 2rem 4rem;
+      text-align: center;
+    }
+
+    .hero-eyebrow { justify-content: center; }
+    .hero-desc { margin: 0 auto 2.5rem; }
+    .hero-cta { justify-content: center; }
+
+    .hero-photo {
+      order: -1;
+      margin-bottom: 2rem;
+    }
+
+    .photo-frame { width: 200px; height: 250px; }
+
+    .contact-strip { padding: 1.2rem 2rem; gap: 1.5rem; }
+
+    section { padding: 4rem 2rem; }
+
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .exp-date { padding-top: 0; }
+
+    footer { padding: 2rem; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">JIG</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#certifications">Certs</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="about">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Administrative Specialist</div>
+    <h1 class="hero-name">John Ivan <span>P. Garcia</span></h1>
+    <p class="hero-title">Customer Service &amp; Office Professional</p>
+    <p class="hero-desc">
+      Exceptionally well-organized and outcome-focused, with expertise in scheduling, record keeping, office administration, and customer service. Committed to delivering top-notch support to management and clients through efficient operations.
+    </p>
+    <div class="hero-cta">
+      <a href="mailto:johnivangarcia81@gmail.com" class="btn-primary">Get in Touch</a>
+      <a href="#experience" class="btn-outline">View Work</a>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <div class="photo-frame">
+      <img src="/mnt/user-data/uploads/7e46561b-4a72-45f7-ae4a-56fc2b9eb354.jpg" alt="John Ivan P. Garcia">
+      <div class="photo-overlay"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT STRIP -->
+<div class="contact-strip">
+  <div class="contact-item">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+    </svg>
+    Digos City, Philippines 8002
+  </div>
+  <div class="contact-item">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+    </svg>
+    johnivangarcia81@gmail.com
+  </div>
+  <div class="contact-item">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.4 2 2 0 0 1 3.58 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6 6l1.06-1.06a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/>
+    </svg>
+    +639555782825
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="section-label">Career</div>
+  <h2 class="section-title">Work Experience</h2>
+
+  <div class="exp-item reveal">
+    <div class="exp-date">Feb 2024 — May 2024</div>
+    <div>
+      <div class="exp-role">Customer Service Representative</div>
+      <div class="exp-company">SixEleven Company · Digos City</div>
+      <ul class="exp-bullets">
+        <li>Managed hundreds of calls per 8-hour shift while maintaining clear performance metrics with no system dialer violations.</li>
+        <li>Collaborated with team members to continuously improve service efficiency and workflow processes.</li>
+        <li>Resolved customer concerns promptly, maintaining a consistently high level of client satisfaction.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Capabilities</div>
+  <h2 class="section-title">Skills &amp; Competencies</h2>
+
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-icon">📞</div>
+      <div class="skill-name">Customer Service &amp; Call Handling</div>
+      <div class="skill-desc">Experienced in managing high-volume calls with professionalism and client-first mindset.</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">💻</div>
+      <div class="skill-name">Microsoft Office Suite</div>
+      <div class="skill-desc">Proficient in Word, Excel, and PowerPoint for documentation, data, and presentations.</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">📊</div>
+      <div class="skill-name">Data Entry &amp; Management</div>
+      <div class="skill-desc">Accurate and efficient in inputting, organizing, and maintaining records and databases.</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">✉️</div>
+      <div class="skill-name">Email Management</div>
+      <div class="skill-desc">Handles professional correspondence with clarity, timeliness, and organization.</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🔍</div>
+      <div class="skill-name">Online Research</div>
+      <div class="skill-desc">Skilled at gathering, verifying, and synthesizing information from online sources.</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🛠</div>
+      <div class="skill-name">Basic Computer Troubleshooting</div>
+      <div class="skill-desc">Able to diagnose and resolve common hardware/software issues to minimize downtime.</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🤝</div>
+      <div class="skill-name">Teamwork &amp; Collaboration</div>
+      <div class="skill-desc">Thrives in team environments, contributing positively to shared goals and outcomes.</div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-icon">🎯</div>
+      <div class="skill-name">Time Management</div>
+      <div class="skill-desc">Adept at prioritizing tasks and meeting deadlines in fast-paced work environments.</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" style="background: var(--navy-mid);">
+  <div class="section-label">Background</div>
+  <h2 class="section-title">Education</h2>
+
+  <div class="edu-list">
+    <div class="edu-item reveal">
+      <div class="edu-line"></div>
+      <div>
+        <div class="edu-degree">Bachelor of Arts in Political Science</div>
+        <div class="edu-school">University of Mindanao Digos College</div>
+        <div class="edu-year">2023 — Present</div>
+      </div>
+    </div>
+    <div class="edu-item reveal">
+      <div class="edu-line"></div>
+      <div>
+        <div class="edu-degree">Senior High School — HUMSS Track</div>
+        <div class="edu-school">Greene Academy Incorporated SHS</div>
+        <div class="edu-year">2021 — 2023</div>
+      </div>
+    </div>
+    <div class="edu-item reveal">
+      <div class="edu-line"></div>
+      <div>
+        <div class="edu-degree">Junior High School</div>
+        <div class="edu-school">Nueva Vida National High School</div>
+        <div class="edu-year">2017 — 2021</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="certs" id="certifications">
+  <div class="section-label">Recognition</div>
+  <h2 class="section-title">Certifications &amp; Awards</h2>
+
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <div class="cert-badge">🏆</div>
+      <div class="cert-name">Certificate of Progression — College Dean's List</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-badge">🔐</div>
+      <div class="cert-name">Certificate of Participation — Cyber Security Workshop</div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-badge">💼</div>
+      <div class="cert-name">Certification of Appearance — Virtual Assistant Program</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">John Ivan P. Garcia</div>
+  <div class="footer-copy">© 2024 · Digos City, Philippines · All rights reserved</div>
+</footer>
+
+<script>
+  // Intersection Observer for reveal animations
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, (entry.target.dataset.delay || 0));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach((el, i) => {
+    el.dataset.delay = (i % 4) * 100;
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
